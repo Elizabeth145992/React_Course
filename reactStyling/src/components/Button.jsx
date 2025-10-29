@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+/*import { styled } from 'styled-components';
 
 const Button = styled.button`
   padding: 1rem 2rem;
@@ -15,4 +15,15 @@ const Button = styled.button`
 }
 `;
 
-export default Button;
+export default Button;*/
+
+export default function Button({children, ...props}) {
+  return(
+    <button 
+    className="px-4 py-2 font-semibold uppercase rounded text-stone-900 bg-amber-400 hover:bg-amber-500" 
+    {...props}
+    >
+      {children}
+    </button>
+  );
+}
