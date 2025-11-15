@@ -13,7 +13,7 @@ export default function NewProject({onAdd, onCancel}) {
     const descriptionInput = description.current.value;
     const dueDateInput = dueDate.current.value;
 
-    if(titleInput.trim().length === 0 || descriptionInput.trim().length === 0 || dueDate.trim().length === 0){
+    if(titleInput.trim().length === 0 || descriptionInput.trim().length === 0 || dueDateInput.trim().length === 0){
         modalRef.current.open();
         return;
     }
