@@ -4,6 +4,7 @@ import Header from './components/Header.jsx';
 import Shop from './components/Shop.jsx';
 import { DUMMY_PRODUCTS } from './dummy-products.js';
 import Product from './components/Product.jsx';
+import { CartContext } from './store/shopping-cart-context.tsx';
 
 function App() {
   const [shoppingCart, setShoppingCart] = useState({
@@ -66,8 +67,14 @@ function App() {
     });
   }
 
+  const ctxValue = {
+    items: shoppingCart.items,
+    addItemToCart: handleAddItemToCart,
+  };
+
   return (
-    <>
+    <CartContext.Provider value={ctxValue}>
+      {/*<CartContext> En versiones superiores a la 19en React ya no es necesario colocar el .Provider */}
       <Header
         cart={shoppingCart}
         onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
@@ -79,7 +86,7 @@ function App() {
           </li>
         ))}  
       </Shop>
-    </>
+    </CartContext.Provider>
   );
 }
 
