@@ -4,7 +4,11 @@ export default function QuestionTimer({timeOut, onTimeOut}) {
     const [progress, setProgress] = useState(timeOut);
 
     useEffect(() => {
-       setTimeout(onTimeOut, timeOut);
+       const timer = setTimeout(onTimeOut, timeOut);
+       
+       return () => {
+        clearTimeout(timer);
+       };
     }, [onTimeOut, timeOut]);
 
     useEffect(() => {

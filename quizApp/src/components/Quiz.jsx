@@ -1,21 +1,34 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback} from "react";
 import QUESTIONS from "../../questions.js";
-import QuestionTimer from "./QuestionTimer.jsx";
+import Question from "./Question.jsx";
 
 import quizComplete from "../assets/quiz-complete.png";
 
 export default function Quiz() {
   const [userAnswer, setUserAnswer] = useState([]);
-  const activeQuestionIndex = userAnswer.length;
+  const [answerState, setAnswerState] = useState('');
+  const activeQuestionIndex = answerState === '' ? userAnswer.length: userAnswer.length -1;
   const quizCompleted = userAnswer.length === QUESTIONS.length;
-  const shuffledQuestions = !quizCompleted ? QUESTIONS[activeQuestionIndex].answers.sort(() => Math.random() - 0.5) : [];
 
   const handleAnswerSelection = useCallback(
   function handleAnswerSelection(selectedAnswer) {
+    setAnswerState('answered');
     setUserAnswer((prevAnswers) => {
       return [...prevAnswers, selectedAnswer];
     });
-  }, []);
+    setTimeout(() => {
+      if(selectedAnswer === QUESTIONS[activeQuestionIndex].answers[0]){
+        setAnswerState('correct');
+      }else{
+        setAnswerState('wrong');
+      }
+    }, 1000);
+
+    setTimeout(() => {
+      setAnswerState('');
+    }, 2000);
+
+  }, [activeQuestionIndex]);
 
   const hanldeSkipAnswer = useCallback(() => handleAnswerSelection(null), [handleAnswerSelection]);
 
@@ -23,19 +36,15 @@ export default function Quiz() {
     <>
       <div id="quiz">
         {!quizCompleted ? (
-          <div id="question">
-            <QuestionTimer timeOut={10000} onTimeOut={hanldeSkipAnswer} />
-            <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-            <ul id="answers">
-              {shuffledQuestions.map((answer, index) => (
-                <li key={index} className="answer">
-                  <button onClick={() => handleAnswerSelection(answer)}>
-                    {answer}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Question
+          /* key={activeQuestionIndex} Puede ser una única llave en el componente para ya no colocarle las dos llaves a cada
+            componete dentor de Question*/
+            activeQuestionIndex={activeQuestionIndex}
+            userAnswer={userAnswer}
+            answerState={answerState}
+            handleAnswerSelection={handleAnswerSelection}
+            hanldeSkipAnswer={hanldeSkipAnswer}
+          />
         ) : (
           <div id="summary">
             <img src={quizComplete} alt="Quiz complete" />
