@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ConfugureCounter({handleChooseCount}){
+export default function ConfugureCounter({onChooseCount}){
     const [enteredNumber, setEnteredNumber] = useState(0);
 
     function handleChange(event) {
@@ -8,7 +8,7 @@ export default function ConfugureCounter({handleChooseCount}){
     }
 
     function handleSetClick() {
-        handleChooseCount(enteredNumber);
+        onChooseCount(enteredNumber);
         setEnteredNumber(0);
     }
     return(

@@ -12,6 +12,7 @@ function App() {
 
   function handleChooseCount(newCount) {
     setChosenCount(newCount);
+    //setChosenCount((prevCount) => prevCount + 1); // Esto se hace cuando se quiere acceder al valor previo del estado
   }
 
   return (
@@ -19,7 +20,7 @@ function App() {
       <Header />
       <main>
         <ConfugureCounter onChooseCount={handleChooseCount} />
-        <Counter initialCount={chosenCount} />
+        <Counter key={chosenCount} initialCount={chosenCount} />
       </main>
     </>
   );
