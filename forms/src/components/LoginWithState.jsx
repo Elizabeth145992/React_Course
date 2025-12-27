@@ -5,16 +5,39 @@ export default function Login() {
     email: "",
     password: ""
   });
+  const [didEdit, setDidEdit] = useState({
+    email: false,
+    password: false
+  });
+
+  const isValidEmail = didEdit.email && !enteredValues.email.includes("@");
+  const isValidPassword = didEdit.password && !enteredValues.password.trim().length <= 4;
+
+  function handleInputs(identifier) {
+    setDidEdit((prevDidEdit) => ({
+      ...prevDidEdit,
+      [identifier]: true
+    }));
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log("Submitted values:", enteredValues);
+    setEnteredValues({
+      email: "",
+      password: ""
+    });
   }
 
   function handleValueChange(field, value) {
     setEnteredValues((prevValues) => ({
       ...prevValues,
       [field]: value
+    }));
+
+    setDidEdit((prevDidEdit) => ({
+      ...prevDidEdit,
+      [field]: true
     }));
   }
 
@@ -30,8 +53,12 @@ export default function Login() {
             type="email"
             name="email"
             onChange={(event) => handleValueChange('email', event.target.value)}
+            onBlur={() => handleInputs("email")}
             value={enteredValues.email}
           />
+          <div className="control-error">
+            {isValidEmail && <p className="error-text">Please enter a valid email address.</p>}
+          </div>
         </div>
 
         <div className="control no-margin">
@@ -41,8 +68,12 @@ export default function Login() {
             type="password"
             name="password"
             onChange={(event) => handleValueChange('password', event.target.value)}
+            onBlur={() => handleInputs("password")}
             value={enteredValues.password}
           />
+          <div className="control-error">
+            {isValidPassword && <p className="error-text">Password must be at least 6 characters long.</p>}
+          </div>
         </div>
       </div>
 
