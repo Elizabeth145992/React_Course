@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input";
 
 export default function Login() {
   const [enteredValues, setEnteredValues] = useState({
@@ -46,35 +47,23 @@ export default function Login() {
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            onChange={(event) => handleValueChange('email', event.target.value)}
-            onBlur={() => handleInputs("email")}
-            value={enteredValues.email}
-          />
-          <div className="control-error">
-            {isValidEmail && <p className="error-text">Please enter a valid email address.</p>}
-          </div>
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          error={isValidEmail ? "Please enter a valid email." : null}
+          onChange={(event) => handleValueChange('email', event.target.value)}
+          onBlur={() => handleInputs("email")}
+          value={enteredValues.email}
+        />
 
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            onChange={(event) => handleValueChange('password', event.target.value)}
-            onBlur={() => handleInputs("password")}
-            value={enteredValues.password}
-          />
-          <div className="control-error">
-            {isValidPassword && <p className="error-text">Password must be at least 6 characters long.</p>}
-          </div>
-        </div>
+        <Input
+          label="Password"
+          id="password"
+          error={isValidPassword ? "Password must be at least 6 characters long." : null}
+          onChange={(event) => handleValueChange('password', event.target.value)}
+          onBlur={() => handleInputs("password")}
+          value={enteredValues.password}
+        />
       </div>
 
       <p className="form-actions">
