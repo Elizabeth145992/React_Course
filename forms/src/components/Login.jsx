@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
+import { isEmail, isNotEmpty, hasMinLength } from "../util/validation";
 
 export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
+  const [passwordIsInvalid, setPasswordIsInvalid] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -11,13 +13,20 @@ export default function Login() {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    const emailIsValid = email.includes("@");
+    const emailIsValid = isNotEmpty(email) && isEmail(email);
+    const passwordIsValid = isNotEmpty(password) && hasMinLength(password, 6);
 
     if (!emailIsValid) {
       setEmailIsInvalid(true);
       return;
     }
     setEmailIsInvalid(false);
+
+    if (!passwordIsValid) {
+      setPasswordIsInvalid(true);
+      return;
+    }
+    setPasswordIsInvalid(false);
 
     event.target.reset();
   }
