@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import MealItem from "../MealItem";
+import MealItem from "./MealItem";
 
 export default function Meals() {
   const [loadMeals, setLoadMeals] = useState([]);
