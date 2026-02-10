@@ -1,29 +1,45 @@
 import { useContext } from "react";
 import Modal from "./Modal";
+import Button from "./Button";
+import CartItem from "./CartItem";
 import CartContext from "../../context/cartContext";
 import { currencyFormatter } from "../../util/formatting";
-import Button from "./Button";
+import UserProgressContext from "../../context/UserProgressContext";
 
-export default function Cart(){
-    const cartctx = useContext(CartContext);
-    
-    const cartTotal = cartctx.items.reduce((totalPrice, item) => {
-        return totalPrice + item.price * item.quantity;
-    }, 0);
+export default function Cart() {
+  const cartctx = useContext(CartContext);
+  const userProgressCtx = useContext(UserProgressContext);
 
-    return (
-        <Modal className="cart">
-            <h2>Cart</h2>
-            <ul>
-                {cartctx.items.map(item => 
-                    <li key={item.id}>{item.name} - ${item.price * item.quantity}</li>
-                )}
-            </ul>
-            <p className="cart-total">{currencyFormatter.format(cartTotal)}</p>
-            <p className="modal-actions">
-                <Button textOnly>Close</Button>
-                <Button>Go to checkout</Button>
-            </p>
-        </Modal>
-    )
+  function hideCartHandler() {
+    userProgressCtx.hideCart();
+  }
+
+  const cartTotal = cartctx.items.reduce((totalPrice, item) => {
+    return totalPrice + item.price * item.quantity;
+  }, 0);
+
+  return (
+    <Modal className="cart" open={userProgressCtx.progress === "cart"}>
+      <h2>Cart</h2>
+      <ul>
+        {cartctx.items.map((item, index) => (
+          <CartItem
+            key={index}
+            name={item.name}
+            qty={item.quantity}
+            price={item.price}
+            onDecrease={() => cartctx.removeItem(item.id)}
+            onIncrease={() => cartctx.addItem(item)}
+          />
+        ))}
+      </ul>
+      <p className="cart-total">{currencyFormatter.format(cartTotal)}</p>
+      <p className="modal-actions">
+        <Button textOnly onClick={hideCartHandler}>
+          Close
+        </Button>
+        <Button>Go to checkout</Button>
+      </p>
+    </Modal>
+  );
 }
