@@ -16,10 +16,6 @@ const ProductItem = (props) => {
     }));
   }
 
-  /*const removeItemCart = () => {
-    dispatch(cartActions.removeItem());
-  }*/
-
   return (
     <li className={classes.item}>
       <Card>
